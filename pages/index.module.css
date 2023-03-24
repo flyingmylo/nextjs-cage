@@ -1,0 +1,12 @@
+.container {
+	
+	margin: 0 auto;
+	height: 600px;
+	display: flex;
+	flex-direction: column;
+	background: #fafafa;
+
+}
+.title {
+  color: forestgreen;
+}
