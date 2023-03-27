@@ -1,4 +1,4 @@
-import { TextField, Container, Box, Snackbar, Alert, Skeleton } from '@mui/material'
+import { TextField, Container, Box, Snackbar, Alert } from '@mui/material'
 import { LoadingButton } from '@mui/lab'
 import axios from 'axios'
 import { useState, useEffect } from 'react'
@@ -53,7 +53,10 @@ export default () => {
   }
 
   const handleEnterChange = (event: React.KeyboardEvent<object>) => {
-    if (!!content && event.key === 'Enter') {
+    if ((event.metaKey || event.ctrlKey) && event.key === "Enter") {
+      // 在原有文本的基础上添加换行
+      setContent(content + "\n");
+    } else if (event.key === 'Enter' && content.length) {
       event.preventDefault()
       if (loading) return
       send()
@@ -67,9 +70,7 @@ export default () => {
     setKeyFromUrl(_key)
   }, [])
   return (
-    <Container classes={{
-      fixed: 'test-fixed'
-    }} sx={{ marginTop: '5vh' }}>
+    <Container maxWidth="sm" sx={{ marginTop: '5vh' }}>
       <Snackbar open={open} anchorOrigin={{ vertical: 'top', horizontal: 'right' }} autoHideDuration={1000}>
         <Alert severity="warning" sx={{ width: '100%' }}>
           请输入密钥 KEY
@@ -84,7 +85,7 @@ export default () => {
           margin="dense"
           fullWidth
           label="请输入密钥 KEY"
-          placeholder='请输入密钥 KEY'
+          // placeholder='请输入密钥 KEY'
           value={secretKey}
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
             setSecretKey(event.target.value);
@@ -96,10 +97,10 @@ export default () => {
           margin="dense"
           multiline
           rows={5}
-          placeholder="请输入问题"
+          // placeholder="请输入问题"
           value={content}
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-            setContent(event.target.value);
+            setContent(event.target.value.replace(/(%5Cn|\n|\r)/g, ""));
           }}
           onKeyDown={handleEnterChange}
         />
@@ -108,8 +109,6 @@ export default () => {
         {
           !!answer && <TextField disabled value={answer} multiline margin="dense" />
         }
-        {loading && <Skeleton variant="rounded" height={60} />}
-
       </Box>
     </Container >
   )
