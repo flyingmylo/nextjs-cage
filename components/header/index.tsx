@@ -24,7 +24,7 @@ export default function Header() {
   return (
     <StyledHeader>
       <h1 className='logo'>
-        <Link href="/">hi</Link>
+        <Link href="/">_</Link>
       </h1>
       <ul className='list'>
         {

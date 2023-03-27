@@ -13,7 +13,7 @@ const handle = app.getRequestHandler()
 // 代理配置表，这里和一般的 webpack 配置是一样的。
 const proxyTable = {
   '/api': {
-    target: 'https://api.openai-proxy.com/v1',
+    target: 'https://api.openai-proxy.com/pro',
     pathRewrite: {
       '^/api': '/'
     },
