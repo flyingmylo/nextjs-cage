@@ -3,7 +3,7 @@ import { LoadingButton } from '@mui/lab'
 import axios from 'axios'
 import { useState, useEffect } from 'react'
 
-export default () => {
+const Chat = () => {
 
   const [content, setContent] = useState('')
   const [answer, setAnswer] = useState('')
@@ -11,11 +11,15 @@ export default () => {
   const [loading, setLoading] = useState(false)
   const [secretKey, setSecretKey] = useState('')
   const [keyFromUrl, setKeyFromUrl] = useState('')
-
+  const [error, setError] = useState(false)
   const send = () => {
-
     if (!keyFromUrl && !secretKey) {
       setOpen(true)
+      return
+    }
+
+    if (!content) {
+      setError(!content)
       return
     }
     setLoading(true)
@@ -71,8 +75,13 @@ export default () => {
   }, [])
   return (
     <Container maxWidth="sm" sx={{ marginTop: '5vh' }}>
-      <Snackbar open={open} anchorOrigin={{ vertical: 'top', horizontal: 'right' }} autoHideDuration={1000}>
-        <Alert severity="warning" sx={{ width: '100%' }}>
+      <Snackbar
+        open={open}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        onClose={() => setOpen(false)}
+        autoHideDuration={3000}
+      >
+        <Alert variant="filled" severity="warning" sx={{ width: '100%' }}>
           请输入密钥 KEY
         </Alert>
       </Snackbar>
@@ -85,19 +94,20 @@ export default () => {
           margin="dense"
           fullWidth
           label="请输入密钥 KEY"
-          // placeholder='请输入密钥 KEY'
+          placeholder='请输入密钥 KEY'
           value={secretKey}
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
             setSecretKey(event.target.value);
           }}
         />
         <TextField
+          error={error}
           fullWidth
           label="请输入问题"
           margin="dense"
           multiline
           rows={5}
-          // placeholder="请输入问题"
+          placeholder="请输入问题"
           value={content}
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
             setContent(event.target.value.replace(/(%5Cn|\n|\r)/g, ""));
@@ -105,7 +115,12 @@ export default () => {
           onKeyDown={handleEnterChange}
         />
 
-        <LoadingButton classes={{}} sx={{ mt: '20px' }} loading={loading} onClick={send} variant="contained">提交</LoadingButton>
+        <LoadingButton
+          classes={{}}
+          sx={{ mt: '20px' }}
+          loading={loading}
+          onClick={send}
+          variant="contained">提交</LoadingButton>
         {
           !!answer && <TextField disabled value={answer} multiline margin="dense" />
         }
@@ -113,3 +128,5 @@ export default () => {
     </Container >
   )
 }
+
+export default Chat

@@ -17,7 +17,7 @@ export default function Home() {
   return (
     <div style={style.container}>
       <Head>
-        <title>h1</title>
+        <title>Butterfly</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <footer></footer>
