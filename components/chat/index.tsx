@@ -3,6 +3,8 @@ import { LoadingButton } from '@mui/lab'
 import axios from 'axios'
 import { useState, useEffect } from 'react'
 
+const host = 'https://api.openai-proxy.com/pro'
+
 const Chat = () => {
 
   const [content, setContent] = useState('')
@@ -30,6 +32,7 @@ const Chat = () => {
     });
 
     const config = {
+      baseUrl: host,
       method: 'post',
       maxBodyLength: Infinity,
       url: '/api/chat/completions',
